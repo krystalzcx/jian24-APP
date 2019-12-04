@@ -13,6 +13,7 @@ install:
   - poetry install -vvv
 script:
   - python -m unittest test_travis.py
+  - poetry run coverage run --source=test_travis -m unittest discover
  # - poetry run coverage run --source=. -m unittest discover
 after_success:
   #- poetry run coveralls
