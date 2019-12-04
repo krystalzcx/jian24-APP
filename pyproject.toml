@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "jian24-APP"
+version = "0.1.0"
+description = ""
+authors = ["1615081154@qq.com <awesomex005@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+request = "^2019.4"
+requests = "^2.22"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
