@@ -16,5 +16,5 @@ script:
   - poetry run coverage run --source=test_travis -m unittest discover
  # - poetry run coverage run --source=. -m unittest discover
 after_success:
-  #- poetry run coveralls
   - poetry run coverage report
+  - poetry run coveralls
