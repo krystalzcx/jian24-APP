@@ -6,6 +6,7 @@ request:
     url: /dashboard/get-login-user
     method: GET
     headers:
+      Cookie: ${generate_cookies()}
       Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
       Access-Control-Allow-Origin: '*'
       Content-Type: application/json
