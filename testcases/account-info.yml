@@ -1,0 +1,30 @@
+
+config:
+    name: "账号信息：门店列表、所属加盟商信息"
+    variables:
+      franchisee_name: ${franchisee_name()}
+    base_url: ${ENV(BASEURL)}
+
+teststeps:
+-
+    name: login
+    testcase: testcases/login.yml
+-
+    name: store list
+    api: api/store-list.yml
+    extract:
+      - store_list: content.data.stores
+    validate:
+     - eq: [content.code,200]
+     - eq: [content.message,'']
+     - len_eq: [content.data.stores,8]
+-
+    name: franchisee info
+    api: api/franchisee.yml
+    extract:
+      - franchisee_name: content.data.franchisee_info.name
+    validate:
+      - eq: [content.code,200]
+      - eq: [content.message,'']
+      - eq: [content.data.franchisee_info.name,$franchisee_name]
+

@@ -1,0 +1,16 @@
+name: get login user
+variables:
+  username: ${ENV(USERNAME)}
+base_url: ${ENV(BASEURL)}
+request:
+    url: /dashboard/get-login-user
+    method: GET
+    headers:
+      Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+      Access-Control-Allow-Origin: '*'
+      Content-Type: application/json
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/76.0.3809.100 Safari/537.36
+validate:
+  - eq: [status_code,200]
+

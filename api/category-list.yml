@@ -1,0 +1,14 @@
+name: 商品分类列表 category list
+variables: {}
+base_url: ${ENV(BASEURL)}
+request:
+    url: /dashboard/category-list/
+    method: GET
+    headers:
+      Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+      Access-Control-Allow-Origin: '*'
+      Content-Type: application/json
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/76.0.3809.100 Safari/537.36
+validate:
+  - eq: [status_code,200]

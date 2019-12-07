@@ -7,6 +7,7 @@ authors = ["1615081154@qq.com <awesomex005@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.6"
 requests = "^2.22"
+HttpRunner = "^2.3"
 
 [tool.poetry.dev-dependencies]
 coverage = "^4.5"

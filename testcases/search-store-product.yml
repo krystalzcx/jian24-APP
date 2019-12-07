@@ -1,0 +1,30 @@
+config:
+    name: "查询所有门店商品信息"
+    variables: {}
+    base_url: ${ENV(BASEURL)}
+
+teststeps:
+-
+    name: login
+    testcase: testcases/login.yml
+-
+    name: category list
+    api: api/category-list.yml
+    extract:
+      - category_list: content.data
+    validate:
+      - eq: [content.code,200]
+      - eq: [content.msg,'']
+      - len_eq: [content.data,30]
+-
+  name: store product
+  api: api/store-product.yml
+  extract:
+    - store_product_num: content.pagination.total
+    - page_size: content.pagination.pageSize
+  validate:
+    - eq: [content.code,200]
+    - eq: [content.msg,'']
+    - eq: [content.pagination.total,62]
+    - eq: [content.pagination.pageSize,20]
+    - len_eq: [content.data,$page_size]

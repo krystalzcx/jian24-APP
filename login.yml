@@ -1,0 +1,79 @@
+config:
+    name: testcase description
+    variables:
+        password: ${ENV(PASSWORD)}
+        username: ${ENV(USERNAME)}
+    base_url: ${ENV(BASEURL)}
+teststeps:
+-   name: /dashboard/login/
+    api: api/login.yml
+-   name: /dashboard/get-login-user
+    api: api/get-login-user.yml
+-   name: /dashboard/get-login-user
+    api: api/get-login-user.yml
+-   name: /dashboard/store-list/
+    api: api/store-list.yml
+-   name: /dashboard/store-list/
+    api: api/store-list.yml
+-   name: /dashboard/franchisee/
+    api: api/franchisee.yml
+-   name: /static/40.chunk.js
+    request:
+        headers:
+            User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+                like Gecko) Chrome/76.0.3809.100 Safari/537.36
+        method: GET
+        url: /static/40.chunk.js
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/x-javascript
+-   name: /dashboard/category-list/
+    request:
+        headers:
+            Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+            Access-Control-Allow-Origin: '*'
+            Content-Type: application/json
+            User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+                like Gecko) Chrome/76.0.3809.100 Safari/537.36
+        method: GET
+        url: /dashboard/category-list/
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json
+    -   eq:
+        - content.msg
+        - ''
+    -   eq:
+        - content.code
+        - 200
+-   name: /dashboard/store-product/
+    request:
+        headers:
+            Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+            Access-Control-Allow-Origin: '*'
+            Content-Type: application/json
+            User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+                like Gecko) Chrome/76.0.3809.100 Safari/537.36
+        method: GET
+        url: /dashboard/store-product/
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json
+    -   eq:
+        - content.msg
+        - ''
+    -   eq:
+        - content.code
+        - 200
