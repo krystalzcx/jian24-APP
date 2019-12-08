@@ -16,8 +16,6 @@ teststeps:
       - eq: [headers.Content-Type,application/json]
       - eq: [content.code,200]
       - eq: [content.data.username,$username]
-    teardown_hooks:
-      - ${teardown_saveCookies($response)}
 -
     name: login step 2-get login user
     api: api/get-login-user.yml

@@ -7,9 +7,6 @@ config:
 
 teststeps:
 -
-    name: login
-    testcase: testcases/login.yml
--
     name: store list
     api: api/store-list.yml
     extract:

@@ -5,9 +5,6 @@ config:
 
 teststeps:
 -
-    name: login
-    testcase: testcases/login.yml
--
     name: category list
     api: api/category-list.yml
     extract:

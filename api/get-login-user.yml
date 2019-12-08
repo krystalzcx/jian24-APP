@@ -14,4 +14,4 @@ request:
         like Gecko) Chrome/76.0.3809.100 Safari/537.36
 validate:
   - eq: [status_code,200]
-
+  - eq: [content.code,200]

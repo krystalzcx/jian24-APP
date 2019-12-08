@@ -24,6 +24,8 @@ extract:
   - cookie: cookies
 validate:
   - eq: [status_code,200]
-
+  - eq: [content.code,200]
+teardown_hooks:
+  - ${teardown_saveCookies($response)}
 
 
