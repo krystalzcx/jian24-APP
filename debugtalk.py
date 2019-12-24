@@ -10,6 +10,16 @@ def sleep(n_secs):
     time.sleep(n_secs)
 
 
+# 不同登录账号，以获取cookie
+def username_password(un=None, pw=None):
+    username = os.environ["USERNAME"]
+    password = os.environ["PASSWORD"]
+    if un is not None and pw is not None:
+        username = un
+        password = pw
+    return username, password
+
+
 # 判断是不是superuser账号
 def is_superuser():
     env = os.environ["USERNAME"]
@@ -38,12 +48,13 @@ def franchisee_name():
 
 def generate_cookies():
     if (not os.path.exists(COOKIES_PATH)) or (
-            3600 < int(time.time()) - int(os.path.getctime(COOKIES_PATH))):
+            3600 < int(time.time()) - int(os.path.getmtime(COOKIES_PATH))):
         # cookies 文件不存在 或 最后修改时间超过 3600 秒 (1小时) 则重新登录刷新 cookies
         runner = HttpRunner()
         runner.run(r'api/login.yml')
     with open(COOKIES_PATH, 'r') as f:
         cookies: str = f.read()
+    print("读取文件内cookie"+cookies)
     return cookies
 
 
@@ -57,7 +68,7 @@ def generate_cookies():
 def teardown_saveCookies(response: requests.Response):
     """保存 cookies 到文件给其他 api 调用"""
     cookies: dict = response.cookies
-    #cookies =dict(response.cookies)
+    # cookies =dict(response.cookies)
 
     foo: list = []
     # 遍历 cookies 拆分 dict 并拼接为特定格式的 str
@@ -67,3 +78,7 @@ def teardown_saveCookies(response: requests.Response):
     bar: str = "".join(foo)
     with open(COOKIES_PATH, 'w') as f:
         f.write(bar)
+    print("重新写入cookie"+bar)
+
+def hook_print(a):
+    print(a)

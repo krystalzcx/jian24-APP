@@ -1,0 +1,50 @@
+
+config:
+    name: "登陆成功流程"
+    variables:
+      username: ${ENV(USERNAME)}
+      password: ${ENV(PASSWORD)}
+      is_superuser: ${is_superuser()}
+      franchisee_name: ${franchisee_name()}
+      content_code: 200
+      store_lenth: 8
+    base_url: ${ENV(BASEURL)}
+teststeps:
+-
+    name: step 1-login
+    variables:
+      username: $username
+      password: $password
+    api: api/login.yml
+    validate:
+      - eq: [headers.Content-Type, application/json]
+      - eq: [content.code, $content_code]
+      - eq: [content.data.username,$username]
+-
+    name: step 2-get login user
+    api: api/get-login-user.yml
+    validate:
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.code,$content_code]
+      - eq: [content.msg,'']
+      #- eq: [content.data.is_superuser,$is_superuser]
+      #- eq: [content.data.is_staff,True]
+      - eq: [content.data.email,$username]
+-
+    name: step 3-store list
+    api: api/store-list.yml
+    extract:
+      - store_list: content.data.stores
+    validate:
+     - eq: [content.code,$content_code]
+     - eq: [content.message,'']
+     - len_eq: [content.data.stores,$store_lenth]
+-
+    name: step 4-franchisee info
+    api: api/franchisee.yml
+    extract:
+      - franchisee_name: content.data.franchisee_info.name
+    validate:
+      - eq: [content.code,$content_code]
+      - eq: [content.message,'']
+      - eq: [content.data.franchisee_info.name,$franchisee_name]

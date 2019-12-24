@@ -1,11 +1,12 @@
 name: 登陆账号的加盟商信息- franchisee
-variables: {}
+variables:
+  cookie: ${generate_cookies()}
 base_url: ${ENV(BASEURL)}
 request:
     url: /dashboard/franchisee/
     method: GET
     headers:
-      Cookie: ${generate_cookies()}
+      Cookie: $cookie
       Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
       Access-Control-Allow-Origin: '*'
       Content-Type: application/json
@@ -13,4 +14,3 @@ request:
         like Gecko) Chrome/76.0.3809.100 Safari/537.36
 validate:
   - eq: [status_code,200]
-  - eq: [content.code,200]

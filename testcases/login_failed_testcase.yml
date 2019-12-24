@@ -1,0 +1,33 @@
+config:
+    name: "登陆失败流程"
+    variables:
+      username: ${ENV(USERNAME)}
+      password: ${ENV(PASSWORD)}
+      is_superuser: ${is_superuser()}
+      franchisee_name: ${franchisee_name()}
+      content_code: 401
+    base_url: ${ENV(BASEURL)}
+teststeps:
+-
+    name: step 1-login
+    variables:
+      username: $username
+      password: $password
+    api: api/login.yml
+    validate:
+      - eq: [headers.Content-Type, application/json]
+      - eq: [content.code, $content_code]
+-
+    name: step 2-get login user
+    api: api/get-login-user.yml
+    validate:
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.code,403]
+      - eq: [content.msg,'会话已过期，请重新登录']
+-
+    name: step 3-store list
+    api: api/store-list.yml
+    validate:
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.code,403]
+      - eq: [content.msg,'会话已过期，请重新登录']

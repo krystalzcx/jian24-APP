@@ -1,12 +1,11 @@
 
 name: login api
 variables:
-  password: ${ENV(PASSWORD)}
-  username: ${ENV(USERNAME)}
-export:
-  - header
-  - cookie
+  password: ${username_password()}[1]
+  username: ${username_password()}[0]
 base_url: ${ENV(BASEURL)}
+setup_hooks:
+  - ${hook_print($username)}
 request:
     url: /dashboard/login/
     method: POST
@@ -19,12 +18,8 @@ request:
     json:
       password: $password
       username: $username
-extract:
-  - header: headers
-  - cookie: cookies
 validate:
   - eq: [status_code,200]
-  - eq: [content.code,200]
 teardown_hooks:
   - ${teardown_saveCookies($response)}
 

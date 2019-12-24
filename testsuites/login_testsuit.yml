@@ -1,0 +1,23 @@
+
+config:
+    name: "login testsuite"
+    variables:
+        device_sn: "XYZ"
+    base_url: "http://127.0.0.1:5000"
+
+testcases:
+-
+    name: 登录成功用例
+    testcase: testcases/login_successful_testcase.yml
+    parameters:
+      username-password-store_lenth:
+        - ["161@qq.com", "12345678", 1]
+        - ["test@jian24.com", "12345678", 1]
+-
+    name: 登录失败用例
+    testcase: testcases/login_failed_testcase.yml
+    parameters:
+      username-password-content_code:
+        - ["161@qq.com", "111111"]
+        - ["user2", "222222"]
+
