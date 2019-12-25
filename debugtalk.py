@@ -18,16 +18,6 @@ def get_is_superuser(username):
         return False
 
 
-# # 获取加盟商的名字
-# def franchisee_name(username):
-#     var = 'superuser'
-#     if is_superuser(username):
-#         var = 'superuser'
-#     else:
-#         var = 'not_sure'
-#     return var
-
-
 '''
 调用teardown_saveCookies()函数，读取cookies
 若还从未读取过cookies(即为从未执行过testcases/login.yml)或者已经过期，
@@ -36,8 +26,9 @@ def get_is_superuser(username):
 
 
 def generate_cookies():
+    print("开始产生cookie")
     if (not os.path.exists(COOKIES_PATH)) or (
-            3600 < int(time.time()) - int(os.path.getmtime(COOKIES_PATH))):
+            3600 < int(time.time()) - int(os.path.getmtime(COOKIES_PATH))) or (os.path.getsize(COOKIES_PATH)==0):
         # cookies 文件不存在 或 最后修改时间超过 3600 秒 (1小时) 则重新登录刷新 cookies
         runner = HttpRunner()
         runner.run(r'api/login.yml')

@@ -2,6 +2,7 @@
     name: "商品管理模块-按照门店查询"
     variables:
       store_code: C0003
+      total_product_count_of_all_store: 61
       total_product_count: 4
     base_url: ${ENV(BASEURL)}
 

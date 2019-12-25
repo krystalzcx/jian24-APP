@@ -1,7 +1,6 @@
 config:
     name: "商品管理模块-查询全部门店下的商品"
     variables:
-      store_code: C0003
       total_product_count_of_all_store: 62
     base_url: ${ENV(BASEURL)}
 
