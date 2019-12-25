@@ -1,0 +1,27 @@
+config:
+    name: "商品管理模块-查询全部门店下的商品"
+    variables:
+      store_code: C0003
+      total_product_count_of_all_store: 62
+    base_url: ${ENV(BASEURL)}
+
+teststeps:
+-
+    name: 商品分类列表 category list
+    api: api/category-list.yml
+    extract:
+      - category_list: content.data
+    validate:
+      - eq: [content.msg,'']
+      - len_eq: [content.data,30]
+-
+  name: 查询所有门店商品 search all store products
+  api: api/SearchProduct.yml
+  extract:
+    - store_product_num: content.pagination.total
+    - page_size: content.pagination.pageSize
+  validate:
+    - eq: [content.msg,'']
+    - eq: [content.pagination.total,$total_product_count_of_all_store]
+    - eq: [content.pagination.pageSize,20]
+    - len_eq: [content.data,$page_size]

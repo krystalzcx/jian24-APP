@@ -1,6 +1,12 @@
-name: 门店商品 store product
+name: 商品管理-查询商品接口
 variables:
   cookie: ${generate_cookies()}
+  shelfNumber_or_goodsNumber: null
+  barcode: null
+  storeCode: null
+  productName: null
+  categoryCode: null
+  sku: null
 base_url: ${ENV(BASEURL)}
 request:
     url: /dashboard/store-product/
@@ -12,5 +18,12 @@ request:
       Content-Type: application/json
       User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/76.0.3809.100 Safari/537.36
+    params:
+      price_tags__device_code__barcode__contains: $shelfNumber_or_goodsNumber
+      product_barcode: $barcode
+      store_code: $storeCode
+      variant__category__code: $categoryCode
+      variant__name__contains: $productName
+      variant__sku__contains: $sku
 validate:
   - eq: [status_code,200]

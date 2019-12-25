@@ -1,8 +1,8 @@
 
 name: login api
 variables:
-  password: ${username_password()}[1]
-  username: ${username_password()}[0]
+  password: ${ENV(PASSWORD)}
+  username: ${ENV(USERNAME)}
 base_url: ${ENV(BASEURL)}
 setup_hooks:
   - ${hook_print($username)}

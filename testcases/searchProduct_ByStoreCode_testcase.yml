@@ -1,0 +1,20 @@
+- config:
+    name: "商品管理模块-按照门店查询"
+    variables:
+      store_code: C0003
+      total_product_count: 4
+    base_url: ${ENV(BASEURL)}
+
+- test:
+    name: 查询所有门店的商品
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 单个门店商品查询-按照门店查询
+    variables:
+      storeCode: $store_code
+    api: api/SearchProduct.yml
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count]
+      - eq: [content.pagination.pageSize,20]
+

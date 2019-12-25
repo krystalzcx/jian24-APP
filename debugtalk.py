@@ -10,33 +10,22 @@ def sleep(n_secs):
     time.sleep(n_secs)
 
 
-# 不同登录账号，以获取cookie
-def username_password(un=None, pw=None):
-    username = os.environ["USERNAME"]
-    password = os.environ["PASSWORD"]
-    if un is not None and pw is not None:
-        username = un
-        password = pw
-    return username, password
-
-
 # 判断是不是superuser账号
-def is_superuser():
-    env = os.environ["USERNAME"]
-    if env == 'admin':
+def get_is_superuser(username):
+    if username == 'admin':
         return True
     else:
         return False
 
 
-# 获取加盟商的名字
-def franchisee_name():
-    var = 'superuser'
-    if is_superuser():
-        var = 'superuser'
-    else:
-        var = 'not_sure'
-    return var
+# # 获取加盟商的名字
+# def franchisee_name(username):
+#     var = 'superuser'
+#     if is_superuser(username):
+#         var = 'superuser'
+#     else:
+#         var = 'not_sure'
+#     return var
 
 
 '''

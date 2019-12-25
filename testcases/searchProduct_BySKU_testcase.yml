@@ -1,26 +1,26 @@
 config:
-    name: "查询所有门店商品信息"
-    variables: {}
+    name: "商品管理模块-按照门店查询"
+    variables:
+      store_code: C0003
+      total_product_count: 4
     base_url: ${ENV(BASEURL)}
 
 teststeps:
 -
-    name: category list
+    name: 商品分类列表 category list
     api: api/category-list.yml
     extract:
       - category_list: content.data
     validate:
-      - eq: [content.code,200]
       - eq: [content.msg,'']
       - len_eq: [content.data,30]
 -
-  name: store product
-  api: api/store-product.yml
+  name: 查询所有门店商品 search all store products
+  api: api/SearchProduct.yml
   extract:
     - store_product_num: content.pagination.total
     - page_size: content.pagination.pageSize
   validate:
-    - eq: [content.code,200]
     - eq: [content.msg,'']
     - eq: [content.pagination.total,62]
     - eq: [content.pagination.pageSize,20]

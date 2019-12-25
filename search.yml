@@ -1,0 +1,34 @@
+config:
+    name: testcase description
+    variables: {}
+teststeps:
+-   name: /dashboard/store-product/
+    request:
+        headers:
+            Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+            Access-Control-Allow-Origin: '*'
+            Content-Type: application/json
+            User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+                like Gecko) Chrome/76.0.3809.100 Safari/537.36
+        method: GET
+        params:
+            price_tags__device_code__barcode__contains: '001'
+            product_barcode: '29477757'
+            store_code: J0001
+            variant__category__code: '04'
+            variant__name__contains: 测试
+            variant__sku__contains: '155'
+        url: http://116.62.121.87:12000/dashboard/store-product/
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json
+    -   eq:
+        - content.msg
+        - ''
+    -   eq:
+        - content.code
+        - 200

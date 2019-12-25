@@ -10,14 +10,14 @@ testcases:
     name: 登录成功用例
     testcase: testcases/login_successful_testcase.yml
     parameters:
-      username-password-store_lenth:
-        - ["161@qq.com", "12345678", 1]
-        - ["test@jian24.com", "12345678", 1]
+      username-password-store_lenth-franchisee_name:
+        - ["161@qq.com", "12345678", 1, '果雪']
+        - ["test@jian24.com", "12345678", 1, '视伍堂']
 -
     name: 登录失败用例
     testcase: testcases/login_failed_testcase.yml
     parameters:
       username-password-content_code:
-        - ["161@qq.com", "111111"]
-        - ["user2", "222222"]
+        - ["161@qq.com", "111111",403]
+        - ["user2", "222222",403]
 
