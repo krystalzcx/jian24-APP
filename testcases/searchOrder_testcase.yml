@@ -1,0 +1,131 @@
+- config:
+    name: 订单查询
+    variables:
+      created_time_start_1: '2018-12-01 14:19:36'
+      created_time_end_1: '2019-12-27 14:19:42'
+      created_time_start_2: '2019-12-27 20:30:29'
+      created_time_end_2: '2019-12-27 20:34:29'
+      franchisee_code_1: 'GX'
+      franchisee_name: '果雪'
+      order_num_1: 'CG00021812110096'
+      return_order_num_1: 'T01CG00021812110096'
+      #order status code: 退单 3
+      #order_status_code_1: 3
+      store_code_1: 'J0001'
+      store_name: '宝龙微店'
+      user_phone_num_1: '15554795855'
+      total_count_by_created_time: 189
+      total_count_by_franchisee_code: 167
+      #total_count_by_order_status_code: 39
+      total_count_by_store_code: 8
+      total_count_by_user_phone_num: 41
+      total_count_by_user_order_num: 2
+      first_page_count_by_created_time: ${numberOfRecords_paging($total_count_by_created_time)}
+      first_page_count_by_franchisee_code: ${numberOfRecords_paging($total_count_by_franchisee_code)}
+      first_page_count_by_order_num: ${numberOfRecords_paging($total_count_by_user_order_num)}
+      #first_page_count_by_order_status_code: ${numberOfRecords_paging($total_count_by_order_status_code)}
+      first_page_count_by_store_code: ${numberOfRecords_paging($total_count_by_store_code)}
+      first_page_count_by_user_phone_num: ${numberOfRecords_paging($total_count_by_user_phone_num)}
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 按照创建时间查询-search order by created time
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end:  $created_time_end_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_by_created_time]
+      - len_eq: [content.data,$first_page_count_by_created_time]
+      #还应该断言每个订单的创建时间是否在筛选的时间范围内
+- test:
+    name: 按照创建时间查询(无结果)-search order by created time
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_2
+      created_time_end:  $created_time_end_2
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,0]
+      - eq: [content.code,200]
+      - len_eq: [content.data,0]
+- test:
+    name: 按照创建时间、加盟商查询 -search order by franchisee code
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end:  $created_time_end_1
+      franchisee_code: $franchisee_code_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_by_franchisee_code]
+      - len_eq: [content.data,$first_page_count_by_franchisee_code]
+      - eq: [content.data.0.franchisee_name,$franchisee_name]
+- test:
+    name: 按照创建时间、订单查询 -search order by order number
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end:  $created_time_end_1
+      order_num: $order_num_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_by_user_order_num]
+      - len_eq: [content.data,$first_page_count_by_order_num]
+      - eq: [content.data.0.order_no,$order_num_1]
+- test:
+    name: 按照创建时间、退单查询 -search order by return order number
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end:  $created_time_end_1
+      return_order_num: $return_order_num_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,1]
+      - len_eq: [content.data,1]
+      - eq: [content.data.0.returnorder,$return_order_num_1]
+- test:
+    name: 按照创建时间、门店编码查询 -search order by store code
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end:  $created_time_end_1
+      store_code: $store_code_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_by_store_code]
+      - len_eq: [content.data,$first_page_count_by_store_code]
+      - eq: [content.data.0.store_name,$store_name]
+- test:
+    name: 按照创建时间、用户手机号查询 -search order by user phone num
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end:  $created_time_end_1
+      user_phone_num: $user_phone_num_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_by_user_phone_num]
+      - len_eq: [content.data,$first_page_count_by_user_phone_num]
+      - eq: [content.data.0.username,$user_phone_num_1]

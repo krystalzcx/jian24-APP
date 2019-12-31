@@ -4,6 +4,8 @@ config:
       username: ${ENV(USERNAME)}
       password: ${ENV(PASSWORD)}
       content_code: 403
+      msg: '用户名或密码错误'
+      cookie: null
     base_url: ${ENV(BASEURL)}
 teststeps:
 -

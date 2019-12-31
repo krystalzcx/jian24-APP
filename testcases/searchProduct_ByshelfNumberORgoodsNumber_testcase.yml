@@ -1,0 +1,23 @@
+- config:
+    name: "商品管理模块-按照商品货架/货位编号查询"
+    variables:
+      store_code: C0003
+      total_product_count_of_all_store: 62
+      total_product_count_by_shelfNumber_or_goodsNumber: 1
+      product_shelfNumber_or_goodsNumber: '020101'
+      first_page_count_of_shelfNumber_or_goodsNumber: ${numberOfRecords_paging($total_product_count_by_shelfNumber_or_goodsNumber)}
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 查询所有门店的商品
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 按照商品货架/货位编号查询
+    api: api/store-product.yml
+    variables:
+      shelfNumber_or_goodsNumber: $product_shelfNumber_or_goodsNumber
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count_by_shelfNumber_or_goodsNumber]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.device_list.0, $product_shelfNumber_or_goodsNumber]
+      - len_eq: [content.data,$first_page_count_of_shelfNumber_or_goodsNumber]

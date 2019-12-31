@@ -1,0 +1,23 @@
+- config:
+    name: "商品管理模块-按照商品barcode查询"
+    variables:
+      store_code: C0003
+      total_product_count_of_all_store: 62
+      total_product_count_by_barcode: 3
+      product_barcode: '6917536014026'
+      first_page_count_of_barcode: ${numberOfRecords_paging($total_product_count_by_barcode)}
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 查询所有门店的商品
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 按照商品barcode查询
+    api: api/store-product.yml
+    variables:
+      barcode: $product_barcode
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count_by_barcode]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.barcode_list.0, $product_barcode]
+      - len_eq: [content.data,$first_page_count_of_barcode]

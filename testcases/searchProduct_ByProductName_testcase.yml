@@ -1,0 +1,35 @@
+- config:
+    name: "商品管理模块-按照商品名称查询"
+    variables:
+      store_code: C0003
+      total_product_count_of_all_store: 62
+      total_product_count_by_name: 3
+      product_partial_name: '合味道 海鲜风味杯面'
+      product_full_name: '合味道 海鲜风味杯面 84g'
+      first_page_count_of_name: ${numberOfRecords_paging($total_product_count_by_name)}
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 查询所有门店的商品
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 按照商品名称查询-部分名称
+    api: api/store-product.yml
+    variables:
+      productName: $product_partial_name
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count_by_name]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.name, $product_full_name]
+      - len_eq: [content.data,$first_page_count_of_name]
+- test:
+    name: 按照商品名称查询-全名称
+    api: api/store-product.yml
+    variables:
+      productName: $product_full_name
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count_by_name]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.name, $product_full_name]
+      - len_eq: [content.data,$first_page_count_of_name]

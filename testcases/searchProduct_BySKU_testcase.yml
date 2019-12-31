@@ -1,27 +1,23 @@
-config:
-    name: "商品管理模块-按照门店查询"
+- config:
+    name: "商品管理模块-按照商品sku查询"
     variables:
       store_code: C0003
-      total_product_count: 4
+      total_product_count_of_all_store: 62
+      total_product_count_by_sku: 3
+      product_sku: '160205152'
+      first_page_count_of_sku: ${numberOfRecords_paging($total_product_count_by_sku)}
     base_url: ${ENV(BASEURL)}
-
-teststeps:
--
-    name: 商品分类列表 category list
-    api: api/category-list.yml
-    extract:
-      - category_list: content.data
+- test:
+    name: 查询所有门店的商品
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 按照商品sku查询
+    variables:
+      sku: $product_sku
+    api: api/store-product.yml
     validate:
       - eq: [content.msg,'']
-      - len_eq: [content.data,30]
--
-  name: 查询所有门店商品 search all store products
-  api: api/SearchProduct.yml
-  extract:
-    - store_product_num: content.pagination.total
-    - page_size: content.pagination.pageSize
-  validate:
-    - eq: [content.msg,'']
-    - eq: [content.pagination.total,62]
-    - eq: [content.pagination.pageSize,20]
-    - len_eq: [content.data,$page_size]
+      - eq: [content.pagination.total,$total_product_count_by_sku]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.sku, $product_sku]
+      - len_eq: [content.data,$first_page_count_of_sku]

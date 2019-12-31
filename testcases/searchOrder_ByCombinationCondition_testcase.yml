@@ -1,0 +1,62 @@
+- config:
+    name: 订单查询
+    variables:
+      created_time_start_1: '2018-12-01 14:19:36'
+      created_time_end_1: '2019-12-27 14:19:42'
+      franchisee_code_1: 'GX'
+      franchisee_name: '果雪'
+      order_num_1: 'LJ00011911210988'
+      return_order_num_1: 'WT01LJ00011911210988'
+      order_status_code_1: 3
+      store_code_1: 'J0001'
+      store_name: '宝龙微店'
+      user_phone_num_1: '15554795855'
+      total_count_1: 1
+      total_count_2: 2
+      first_page_count: ${numberOfRecords_paging($total_count_1)}
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 多个条件同时查询
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end: $created_time_end_1
+      franchisee_code: $franchisee_code_1
+      order_num: $order_num_1
+      return_order_num: $return_order_num_1
+      order_status_code: $order_status_code_1
+      store_code: $store_code_1
+      user_phone_num: $user_phone_num_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_1]
+      - len_eq: [content.data,$total_count_1]
+      - eq: [content.data.0.franchisee_name,$franchisee_name]
+      - eq: [content.data.0.order_no,$order_num_1]
+      - eq: [content.data.0.returnorder,$return_order_num_1]
+      - eq: [content.data.0.store_name,$store_name]
+      - eq: [content.data.0.username,$user_phone_num_1]
+- test:
+    name: 多个条件同时查询-除了退单号、订单状态
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end: $created_time_end_1
+      franchisee_code: $franchisee_code_1
+      order_num: $order_num_1
+      store_code: $store_code_1
+      user_phone_num: $user_phone_num_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_2]
+      - len_eq: [content.data,$total_count_2]
+      - eq: [content.data.0.franchisee_name,$franchisee_name]
+      - eq: [content.data.0.order_no,$order_num_1]
+      - eq: [content.data.0.store_name,$store_name]
+      - eq: [content.data.0.username,$user_phone_num_1]

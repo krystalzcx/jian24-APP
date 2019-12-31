@@ -1,0 +1,30 @@
+- config:
+    name: 订单查询
+    variables:
+      created_time_start_1: '2018-12-01 14:19:36'
+      created_time_end_1: '2019-12-27 14:19:42'
+      order_status_code_1: 3
+      total_count_by_order_status_code: 39
+      first_page_count_by_order_status_code: ${numberOfRecords_paging($total_count_by_order_status_code)}
+    export:
+      - order_status_code_1
+      - created_time_end_1
+      - order_status_code_1
+      - total_count_by_order_status_code
+      - first_page_count_by_order_status_code
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 按照创建时间、订单状态查询 -search order by order status code
+    api: api/order.yml
+    variables:
+      created_time_start: $created_time_start_1
+      created_time_end:  $created_time_end_1
+      order_status_code: $order_status_code_1
+    validate:
+      - eq: [status_code,200]
+      - eq: [headers.Content-Type,application/json]
+      - eq: [content.msg,'']
+      - eq: [content.code,200]
+      - eq: [content.pagination.total,$total_count_by_order_status_code]
+      - len_eq: [content.data,$first_page_count_by_order_status_code]
+

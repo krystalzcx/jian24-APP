@@ -1,0 +1,9 @@
+config:
+  name: 订单管理模块
+  variables: {}
+  base_url: ${ENV(BASEURL)}
+testcases:
+-
+  name: 订单管理模块-单个条件搜索
+  testcase: testcases/searchOrder_testcase.yml
+

@@ -2,8 +2,13 @@ config:
     name: "商品管理模块-查询全部门店下的商品"
     variables:
       total_product_count_of_all_store: 62
+      page_num: 2
+      page_count_1: 20
+      page_count_2: 50
+      first_page_count: ${numberOfRecords_paging($total_product_count_of_all_store)}
     base_url: ${ENV(BASEURL)}
-
+    export:
+      -  total_product_count_of_all_store
 teststeps:
 -
     name: 商品分类列表 category list
@@ -15,7 +20,7 @@ teststeps:
       - len_eq: [content.data,30]
 -
   name: 查询所有门店商品 search all store products
-  api: api/SearchProduct.yml
+  api: api/store-product.yml
   extract:
     - store_product_num: content.pagination.total
     - page_size: content.pagination.pageSize
@@ -23,4 +28,24 @@ teststeps:
     - eq: [content.msg,'']
     - eq: [content.pagination.total,$total_product_count_of_all_store]
     - eq: [content.pagination.pageSize,20]
-    - len_eq: [content.data,$page_size]
+    - len_eq: [content.data,$first_page_count]
+-
+  name: 翻页
+  api: api/store-product.yml
+  variables:
+    page: $page_num
+    count: $page_count_1
+  validate:
+    - eq: [content.msg,'']
+    - eq: [content.pagination.total,$total_product_count_of_all_store]
+    - eq: [content.pagination.pageSize,$count]
+-
+  name: 切换页面记录数
+  api: api/store-product.yml
+  variables:
+      page: 1
+      count: $page_count_2
+  validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count_of_all_store]
+      - eq: [content.pagination.pageSize,$page_count_1]

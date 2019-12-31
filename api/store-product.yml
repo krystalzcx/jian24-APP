@@ -7,6 +7,8 @@ variables:
   productName: null
   categoryCode: null
   sku: null
+  page_num: null
+  page_count: null
 base_url: ${ENV(BASEURL)}
 request:
     url: /dashboard/store-product/
@@ -25,5 +27,7 @@ request:
       variant__category__code: $categoryCode
       variant__name__contains: $productName
       variant__sku__contains: $sku
+      page: $page_num
+      count: $page_count
 validate:
   - eq: [status_code,200]

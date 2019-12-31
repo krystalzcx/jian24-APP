@@ -1,0 +1,24 @@
+- config:
+    name: "商品管理模块-按照商品分类查询"
+    variables:
+      store_code: C0003
+      total_product_count_of_all_store: 62
+      total_product_count_by_categoryCode: 3
+      product_categoryCode: '150105'
+      product_categoryName: '杯装方便面'
+      first_page_count_of_categoryCode: ${numberOfRecords_paging($total_product_count_by_categoryCode)}
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 查询所有门店的商品
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 按照商品分类查询
+    api: api/store-product.yml
+    variables:
+      categoryCode: $product_categoryCode
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count_by_categoryCode]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.category_name, $product_categoryName]
+      - len_eq: [content.data,$first_page_count_of_categoryCode]

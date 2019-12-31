@@ -1,4 +1,4 @@
-name: 登陆账号的加盟商信息- franchisee
+name: 登陆账号所属的加盟商信息(展示在菜单栏)- franchisee
 variables:
   cookie: ${generate_cookies()}
 base_url: ${ENV(BASEURL)}

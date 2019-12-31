@@ -1,0 +1,34 @@
+name: 订单查询-order
+variables:
+  cookie: ${generate_cookies()}
+  created_time_start: null
+  created_time_end: null
+  franchisee_code: null
+  order_num: null
+  return_order_num: null
+  order_status_code: null
+  store_code: null
+  user_phone_num: null
+  #first_page_count: ${numberOfRecords_paging(189)}
+base_url: ${ENV(BASEURL)}
+request:
+  url: /dashboard/order/
+  method: GET
+  headers:
+    Cookie: $cookie
+    Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+    Access-Control-Allow-Origin: '*'
+    Content-Type: application/json
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/76.0.3809.100 Safari/537.36
+  params:
+      created_at__gte: $created_time_start
+      created_at__lt:  $created_time_end
+      franchisee_code: $franchisee_code
+      order_no: $order_num
+      ro_code__contains: $return_order_num
+      status: $order_status_code
+      store_code: $store_code
+      user__username: $user_phone_num
+validate:
+  - eq: [status_code,200]

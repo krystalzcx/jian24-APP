@@ -1,0 +1,60 @@
+- config:
+    name: "商品管理模块-组合条件查询"
+    variables:
+      store_code: J0001
+      store_name: '宝龙微店'
+      total_product_count_of_all_store: 62
+      total_product_count: 1
+      total_product_count_1: 3
+      product_sku: '160205152'
+      product_barcode: '6917536014026'
+      product_partial_name: '合味道 海鲜风味杯面'
+      product_full_name: '合味道 海鲜风味杯面 84g'
+      product_categoryCode: '150105'
+      product_categoryName: '杯装方便面'
+      product_shelfNumber_or_goodsNumber: '020101'
+      first_page_count_of_combinationCondition: ${numberOfRecords_paging($total_product_count)}
+      first_page_count_of_combinationCondition_1: ${numberOfRecords_paging($total_product_count_1)}
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 查询所有门店的商品
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 所有条件同时查询
+    variables:
+      storeCode: $store_code
+      sku: $product_sku
+      barcode: $product_barcode
+      productName: $product_full_name
+      categoryCode: $product_categoryCode
+      shelfNumber_or_goodsNumber: $product_shelfNumber_or_goodsNumber
+    api: api/store-product.yml
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.sku, $product_sku]
+      - eq: [content.data.0.barcode_list.0, $product_barcode]
+      - eq: [content.data.0.category_name, $product_categoryName]
+      - eq: [content.data.0.device_list.0, $product_shelfNumber_or_goodsNumber]
+      - eq: [content.data.0.name, $product_full_name]
+      - eq: [content.data.0.store_name, $store_name]
+      - len_eq: [content.data,$first_page_count_of_combinationCondition]
+- test:
+    name: 组合查询-同时查询条件是：sku、barcode、商品名称、商品分类
+    variables:
+      sku: $product_sku
+      barcode: $product_barcode
+      productName: $product_full_name
+      categoryCode: $product_categoryCode
+    api: api/store-product.yml
+    validate:
+      - eq: [content.msg,'']
+      - eq: [content.pagination.total,$total_product_count_1]
+      - eq: [content.pagination.pageSize,20]
+      - eq: [content.data.0.sku, $product_sku]
+      - eq: [content.data.0.barcode_list.0, $product_barcode]
+      - eq: [content.data.0.category_name, $product_categoryName]
+      - eq: [content.data.0.name, $product_full_name]
+      - len_eq: [content.data,$first_page_count_of_combinationCondition_1]
+

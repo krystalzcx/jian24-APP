@@ -2,10 +2,11 @@
     name: "商品管理模块-按照门店查询"
     variables:
       store_code: C0003
-      total_product_count_of_all_store: 61
-      total_product_count: 4
+      store_name: '新疆视伍堂'
+      total_product_count_of_all_store: 62
+      total_product_count_by_storeCode: 4
+      first_page_count_of_storeCode: ${numberOfRecords_paging($total_product_count_by_storeCode)}
     base_url: ${ENV(BASEURL)}
-
 - test:
     name: 查询所有门店的商品
     testcase: testcases/searchProduct_AllStoreCode_testcase.yml
@@ -13,9 +14,10 @@
     name: 单个门店商品查询-按照门店查询
     variables:
       storeCode: $store_code
-    api: api/SearchProduct.yml
+    api: api/store-product.yml
     validate:
       - eq: [content.msg,'']
-      - eq: [content.pagination.total,$total_product_count]
+      - eq: [content.pagination.total,$total_product_count_by_storeCode]
       - eq: [content.pagination.pageSize,20]
-
+      - eq: [content.data.0.store_name, $store_name]
+      - len_eq: [content.data,$first_page_count_of_storeCode]

@@ -1,0 +1,26 @@
+- config:
+    name: 商品管理模块测试集合
+    variables: {}
+    baseurl: "http://127.0.0.1:5000"
+- test:
+    name: 单个条件查询-按照全部门店查询
+    testcase: testcases/searchProduct_AllStoreCode_testcase.yml
+- test:
+    name: 单个条件查询-按照门店编码查询
+    testcase: testcases/searchProduct_ByBarcode_testcase.yml
+- test:
+    name: 单个条件查询-按照商品sku查询
+    testcase: testcases/searchProduct_BySKU_testcase.yml
+- test:
+    name: 单个条件查询-按照商品名称查询
+    testcase: testcases/searchProduct_ByProductName_testcase.yml
+- test:
+    name: 单个条件查询-按照商品分类查询
+    testcase: testcases/searchProduct_ByCategoryCode_testcase.yml
+- test:
+    name: 单个条件查询-按照货架/货位编号查询
+    testcase: testcases/searchProduct_ByshelfNumberORgoodsNumber_testcase.yml
+- test:
+    name: 组合条件查询
+    testcase: testcases/searchProduct_ByCombinationCondition_testcase.yml
+

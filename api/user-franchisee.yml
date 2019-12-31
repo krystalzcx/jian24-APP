@@ -1,0 +1,21 @@
+name: 登陆账号可以管理的加盟商列表-user-franchisee
+variables:
+  cookie: ${generate_cookies()}
+  franchisee_count: 9
+base_url: ${ENV(BASEURL)}
+request:
+  url: /api/2.0/user-franchisee/
+  method: GET
+  headers:
+    Cookie: $cookie
+    Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+    Access-Control-Allow-Origin: '*'
+    Content-Type: application/json
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+      like Gecko) Chrome/76.0.3809.100 Safari/537.36
+validate:
+- eq: [status_code,200]
+- eq: [headers.Content-Type,application/json]
+- eq: [content.message,success]
+- eq: [content.status,true]
+- len_eq: [content.info.data,$franchisee_count]

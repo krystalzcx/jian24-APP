@@ -1,9 +1,8 @@
 
 config:
-    name: "login testsuite"
-    variables:
-        device_sn: "XYZ"
-    base_url: "http://127.0.0.1:5000"
+    name: 登录模块测试集合
+    variables: {}
+    base_url: ${ENV(BASEURL)}
 
 testcases:
 -

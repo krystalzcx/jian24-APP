@@ -1,0 +1,33 @@
+config:
+    name: 商品信息导入
+    variables:
+        cookie: ${generate_cookies()}
+        file: ${importFile_changeTo_binary()}
+    base_url: ${ENV(BASEURL)}
+teststeps:
+-   name: /dashboard/store-product-import/
+    request:
+        data:
+          file: $file
+        headers:
+            Cookie: $cookie
+            Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryAfMxg8C4TPkDGxKm
+            User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+                like Gecko) Chrome/76.0.3809.100 Safari/537.36
+            X-Requested-With: XMLHttpRequest
+            authorization: authorization-text
+        method: POST
+        url: /dashboard/store-product-import/
+    validate:
+    -   eq:
+        - status_code
+        - 200
+    -   eq:
+        - headers.Content-Type
+        - application/json
+    -   eq:
+        - content.msg
+        - 国条6925843404236,6925843404234,6925843404232,6925843404231,6925843404235,6925843404233不存在,请联系简24商品部同事进行维护基础商品信息;
+    -   eq:
+        - content.code
+        - 500

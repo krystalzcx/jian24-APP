@@ -17,6 +17,32 @@ def get_is_superuser(username):
     else:
         return False
 
+#商品信息导入接口需要把导入的文件参数转化为二进制
+#问题:转为二进制的形式与实际请求的时候不一致
+def importFile_changeTo_binary():
+    path=r'data/product_info_import_template'
+    with open(path, 'r') as f:
+        file_info: str = f.read()
+    binary_file = bytes(file_info, encoding="utf8")
+    print(binary_file)
+    return binary_file
+
+'''
+断言某种搜索条件下第一页的记录数量:
+某种搜索条件下的实际查询结果总数量记为A
+接口展示的记录只是当前页的数据，记录数记为B
+若A>20，那么B=20;若A<20，那么B=A
+'''
+
+def numberOfRecords_paging(total_count):
+    first_page_count = 0
+    if total_count > 20:
+        first_page_count = 20
+    else:
+        first_page_count = total_count
+    print("第一页的记录数量是："+str(total_count))
+    return first_page_count
+
 
 '''
 调用teardown_saveCookies()函数，读取cookies
@@ -26,10 +52,9 @@ def get_is_superuser(username):
 
 
 def generate_cookies():
-    print("开始产生cookie")
     if (not os.path.exists(COOKIES_PATH)) or (
             3600 < int(time.time()) - int(os.path.getmtime(COOKIES_PATH))) or (os.path.getsize(COOKIES_PATH)==0):
-        # cookies 文件不存在 或 最后修改时间超过 3600 秒 (1小时) 则重新登录刷新 cookies
+        # cookies 文件不存在 或 最后修改时间超过 3600 秒 (1小时) 或 cookie文件内容为空 则重新登录刷新 cookies
         runner = HttpRunner()
         runner.run(r'api/login.yml')
     with open(COOKIES_PATH, 'r') as f:
@@ -49,12 +74,12 @@ def teardown_saveCookies(response: requests.Response):
     """保存 cookies 到文件给其他 api 调用"""
     cookies: dict = response.cookies
     # cookies =dict(response.cookies)
-
     foo: list = []
     # 遍历 cookies 拆分 dict 并拼接为特定格式的 str
     # 如: server=xxxxx; sid=xxxxxx; track=xxxxx;
     for k, v in cookies.items():
         foo.append(k + '=' + v + '; ')
+    # join() 方法用于将序列中的元素以指定的字符连接生成一个新的字符串。
     bar: str = "".join(foo)
     with open(COOKIES_PATH, 'w') as f:
         f.write(bar)
