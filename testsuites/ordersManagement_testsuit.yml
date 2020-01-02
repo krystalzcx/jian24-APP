@@ -7,3 +7,15 @@ testcases:
   name: 订单管理模块-单个条件搜索
   testcase: testcases/searchOrder_testcase.yml
 
+-
+  name: 订单管理模块——单个条件搜索-按照订单状态查询
+  testcase: testcases/searchOrder_ByOrderStatusCode_testcase.yml
+  parameters:
+  order_status_code_1-total_count_by_order_status_code:
+    - [3,39]
+    - [0,12]
+    - [1,9]
+    - [2,129]
+-
+  name: 订单管理模块-多个条件搜索
+  testcase: testcases/searchOrder_ByCombinationCondition_testcase.yml
