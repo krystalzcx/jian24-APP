@@ -1,0 +1,54 @@
+name: 单品促销
+variables:
+  cookie: ${generate_cookies()}
+  sku: '160205152'
+  promotion__price: '1'
+  promotion_name: 测试单品促销
+  promotion_start_time: '2020-01-05 11:15:39'
+  promotion_end_time: '2020-01-06 11:15:43'
+  user_level: [1, 2, 3, 4, 5]
+  store: ['G0002']
+  #启用：1 禁用：0
+  enable_disable: '1'
+base_url: ${ENV(BASEURL)}
+request:
+    headers:
+        Cookie: $cookie
+        Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+        Access-Control-Allow-Origin: '*'
+        Content-Type: application/json
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+            like Gecko) Chrome/76.0.3809.100 Safari/537.36
+    json:
+        condition:
+            quantity: 1
+        products:
+          -  as_price: $promotion__price
+             sku: $sku
+        promotion_action:
+            as_price: ''
+        promotion_end_time: $promotion_end_time
+        promotion_name: $promotion_name
+        promotion_platform:
+          - '0'
+        promotion_remark: ''
+        promotion_start_time: $promotion_start_time
+        promotion_type: 1
+        review_approved: $enable_disable
+        stores: $store
+        user_level: $user_level
+    method: POST
+    url: http://116.62.121.87:12000/api/1.0/promotion/
+validate:
+  -   eq:
+      - status_code
+      - 200
+  -   eq:
+      - headers.Content-Type
+      - application/json
+  -   eq:
+      - content.message
+      - success
+  -   eq:
+      - content.status
+      - true

@@ -1,0 +1,19 @@
+- config:
+    name: 创建单品促销
+    variables:
+        #创构建的开始结束时间需要自动生成(查询接口同理)
+        promotion_name: 测试单品促销1578036995
+        sku: '160205152'
+        name_of_product: '合味道 海鲜风味杯面 84g'
+        store: ['G0002']
+    base_url: ${ENV(BASEURL)}
+- test:
+    name: 创建关于一个门店的单品促销
+    api: api/create_promotion.yml
+    setup_hooks:
+        - ${disable_promtion()}
+- test:
+    name: 查询新建的单品促销id
+    api: api/search_promotion.yml
+    teardown_hooks:
+        - ${get_promotion_id($response)}

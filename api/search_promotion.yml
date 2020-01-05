@@ -1,0 +1,40 @@
+name: 查询单品促销
+variables:
+  cookie: ${generate_cookies()}
+  start_time: '2020-01-04 23:59:59'
+  end_time: '2020-01-01 00:00:00'
+  promotion_status_code: null
+  product_name: null
+  store_code: null
+base_url: ${ENV(BASEURL)}
+request:
+  headers:
+      Cookie: $cookie
+      Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+      Access-Control-Allow-Origin: '*'
+      Content-Type: application/json
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+          like Gecko) Chrome/76.0.3809.100 Safari/537.36
+  method: GET
+  params:
+      promotion_end_time: $start_time
+      promotion_start_time: $end_time
+      type: 1,7
+      promotion_status: $promotion_status_code
+      product_name: $product_name
+      search_store_code: $store_code
+  url: http://116.62.121.87:12000/api/1.0/promotion/
+validate:
+-   eq:
+    - status_code
+    - 200
+-   eq:
+    - headers.Content-Type
+    - application/json
+-   eq:
+    - content.message
+    - success
+-   eq:
+    - content.status
+    - true
+

@@ -4,11 +4,31 @@ import requests
 from httprunner.api import HttpRunner
 
 COOKIES_PATH = r'data/cookies'
-
+ID=''
 
 def sleep(n_secs):
     time.sleep(n_secs)
 
+#产生一个时间戳后缀
+def name_suffix_of_time_stamp():
+    name_suffix=str(int(time.time()))
+    return name_suffix
+
+#禁用之前的冲突的单品促销
+def disable_promtion():
+    runner = HttpRunner()
+    runner.run(r'api/login.yml')
+
+
+#获取新建的单品促销id
+def get_promotion_id(response):
+    #id=response.json['info']['data'][0]['id']
+    id=response
+    ID=id
+    print('测试')
+    print(type(ID))
+    print(ID)
+    return ID
 
 # 判断是不是superuser账号
 def get_is_superuser(username):
