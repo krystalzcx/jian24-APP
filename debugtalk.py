@@ -4,7 +4,8 @@ import requests
 from httprunner.api import HttpRunner
 
 COOKIES_PATH = r'data/cookies'
-ID=''
+ID_of_promotion_PATH=r'data/ID'
+ID_of_promotion=''
 
 def sleep(n_secs):
     time.sleep(n_secs)
@@ -16,19 +17,43 @@ def name_suffix_of_time_stamp():
 
 #禁用之前的冲突的单品促销
 def disable_promtion():
-    runner = HttpRunner()
-    runner.run(r'api/login.yml')
+    #判断存放单品促销ID文件是否为空，即为ID是否存在
+    if os.path.getsize(ID_of_promotion_PATH)!=0:
+        runner = HttpRunner()
+        runner.run(r'api/disable_promotion.yml')
 
 
-#获取新建的单品促销id
-def get_promotion_id(response):
-    #id=response.json['info']['data'][0]['id']
-    id=response
-    ID=id
-    print('测试')
-    print(type(ID))
-    print(ID)
-    return ID
+#方式1：获取新建的状态未启用的单品促销ID_of_promotion_of_promotion
+def get_promotion_id_1(response):
+    id=str(response.json['info']['data'][0]['id'])
+    status=response.json['info']['data'][0]['status_name']
+    if status != '禁用':
+        with open(ID_of_promotion_PATH, 'w') as f:
+            f.write(id)
+    print(id)
+    return id
+
+def get_ID_of_promotion():
+    with open(ID_of_promotion_PATH, 'r') as f:
+        id: str = f.read()
+    return id
+
+# #方式2：获取新建的状态未启用的单品促销ID_of_promotion
+# def get_promotion_ID_of_promotion_2():
+#     runner=HttpRunner()
+#     response=runner.run(r'api/search_promotion.yml')
+#     print('方式2')
+#     print(response)
+#     # id = response['info']['data'][0]['ID_of_promotion']
+#     # status = response['info']['data'][0]['status_name']
+#     # if status != '禁用':
+#     #     ID_of_promotion = id
+#     # else:
+#     #     ID_of_promotion = ''
+#     return ID_of_promotion
+
+
+
 
 # 判断是不是superuser账号
 def get_is_superuser(username):
@@ -96,7 +121,7 @@ def teardown_saveCookies(response: requests.Response):
     # cookies =dict(response.cookies)
     foo: list = []
     # 遍历 cookies 拆分 dict 并拼接为特定格式的 str
-    # 如: server=xxxxx; sid=xxxxxx; track=xxxxx;
+    # 如: server=xxxxx; sID_of_promotion=xxxxxx; track=xxxxx;
     for k, v in cookies.items():
         foo.append(k + '=' + v + '; ')
     # join() 方法用于将序列中的元素以指定的字符连接生成一个新的字符串。

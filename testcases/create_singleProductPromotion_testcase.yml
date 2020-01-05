@@ -16,4 +16,4 @@
     name: 查询新建的单品促销id
     api: api/search_promotion.yml
     teardown_hooks:
-        - ${get_promotion_id($response)}
+        - ${get_promotion_id_1($response)}

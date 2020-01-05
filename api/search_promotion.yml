@@ -1,8 +1,8 @@
 name: 查询单品促销
 variables:
   cookie: ${generate_cookies()}
-  start_time: '2020-01-04 23:59:59'
-  end_time: '2020-01-01 00:00:00'
+  start_time: '2020-01-04 00:00:00'
+  end_time: '2020-12-04 23:59:59'
   promotion_status_code: null
   product_name: null
   store_code: null
@@ -17,8 +17,8 @@ request:
           like Gecko) Chrome/76.0.3809.100 Safari/537.36
   method: GET
   params:
-      promotion_end_time: $start_time
-      promotion_start_time: $end_time
+      promotion_end_time: $end_time
+      promotion_start_time: $start_time
       type: 1,7
       promotion_status: $promotion_status_code
       product_name: $product_name

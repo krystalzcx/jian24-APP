@@ -1,0 +1,31 @@
+name: /api/1.0/promotion/576/disabled/
+variables:
+  cookie: ${generate_cookies()}
+  promotion_id: ${get_ID_of_promotion()}
+base_url: ${ENV(BASEURL)}
+request:
+    headers:
+        Cookie: $cookie
+        Access-Control-Allow-Methods: GET,PUT,POST,PATCH,DELETE
+        Access-Control-Allow-Origin: '*'
+        Content-Type: application/json
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML,
+            like Gecko) Chrome/76.0.3809.100 Safari/537.36
+    json: {}
+    method: POST
+    params:
+        type: '1'
+    url: http://116.62.121.87:12000/api/1.0/promotion/$promotion_id/disabled/
+validate:
+-   eq:
+    - status_code
+    - 200
+-   eq:
+    - headers.Content-Type
+    - application/json
+-   eq:
+    - content.message
+    - success
+-   eq:
+    - content.status
+    - true
