@@ -4,8 +4,8 @@ variables:
   sku: '160205152'
   promotion__price: '1'
   promotion_name: 测试单品促销
-  promotion_start_time: '2020-01-05 11:15:39'
-  promotion_end_time: '2020-01-06 11:15:43'
+  promotion_start_time: ${get_promtion_start_time()}
+  promotion_end_time: ${get_promtion_end_time()}
   user_level: [1, 2, 3, 4, 5]
   store: ['G0002']
   #启用：1 禁用：0

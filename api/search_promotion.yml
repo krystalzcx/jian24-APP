@@ -1,8 +1,8 @@
 name: 查询单品促销
 variables:
   cookie: ${generate_cookies()}
-  start_time: '2020-01-04 00:00:00'
-  end_time: '2020-12-04 23:59:59'
+  start_time: ${get_promtion_start_time()}
+  end_time: ${get_promtion_end_time()}
   promotion_status_code: null
   product_name: null
   store_code: null
